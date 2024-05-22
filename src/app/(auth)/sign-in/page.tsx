@@ -109,7 +109,7 @@ export default function Page () {
           <p>
             New to open-feedback?{' '}
             <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
-              Sign In
+              Sign Up
             </Link>
           </p>
         </div>
