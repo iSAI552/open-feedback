@@ -16,7 +16,7 @@ export default function VerifyAccount() {
     const params = useParams<{ username: string }>()
     const { toast } = useToast()
 
-    const register = useForm<z.infer<typeof verifyCodeSchema>>({
+    const form = useForm<z.infer<typeof verifyCodeSchema>>({
         resolver: zodResolver(verifyCodeSchema),
     })
 
@@ -54,11 +54,11 @@ export default function VerifyAccount() {
                     </h1>
                     <p className="mb-4">Enter the verification code sent your email</p>
                 </div>
-                <Form {...register}>
-          <form onSubmit={register.handleSubmit(onSubmit)} className="space-y-6">
+                <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
           name="code"
-          control={register.control}
+          control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Verification Code</FormLabel>

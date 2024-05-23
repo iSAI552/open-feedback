@@ -29,7 +29,7 @@ export default function Page () {
 
   // zod implementation
 
-  const register = useForm<z.infer<typeof signUpSchema>>({
+  const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       username: "",
@@ -95,11 +95,11 @@ export default function Page () {
           </h1>
           <p className="mb-4">Sign up to start your secret conversations</p>
         </div>
-        <Form {...register}>
-          <form onSubmit={register.handleSubmit(onSubmit)} className="space-y-6">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
           name="username"
-          control={register.control}
+          control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
@@ -126,7 +126,7 @@ export default function Page () {
         />
           <FormField
           name="email"
-          control={register.control}
+          control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
@@ -142,7 +142,7 @@ export default function Page () {
         />
           <FormField
           name="password"
-          control={register.control}
+          control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>

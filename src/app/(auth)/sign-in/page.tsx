@@ -24,7 +24,7 @@ export default function Page () {
 
   // zod implementation
 
-  const register = useForm<z.infer<typeof signInSchema>>({
+  const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       identifier: "",
@@ -63,11 +63,11 @@ export default function Page () {
           </h1>
           <p className="mb-4">Sign in to continue your secret conversations</p>
         </div>
-        <Form {...register}>
-          <form onSubmit={register.handleSubmit(onSubmit)} className="space-y-6">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
           name="identifier"
-          control={register.control}
+          control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
@@ -80,7 +80,7 @@ export default function Page () {
         />
           <FormField
           name="password"
-          control={register.control}
+          control={form.control}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
