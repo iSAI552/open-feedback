@@ -7,7 +7,9 @@ export async function POST(request: Request) {
   await dbConnect();
   try {
     const {username, code} = await request.json()
-    const result = verifyCodeSchema.safeParse(code)
+
+    const result = verifyCodeSchema.safeParse({code})
+
     if(!result.success){
         const verifyCodeErrors = result.error.format().code?._errors || []
       return Response.json(

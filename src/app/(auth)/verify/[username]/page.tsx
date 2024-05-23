@@ -10,11 +10,13 @@ import { useParams, useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { useState } from "react"
 
 export default function VerifyAccount() {
     const router = useRouter()
     const params = useParams<{ username: string }>()
     const { toast } = useToast()
+    const [loading, setLoading] = useState(false)
 
     const form = useForm<z.infer<typeof verifyCodeSchema>>({
         resolver: zodResolver(verifyCodeSchema),
@@ -22,6 +24,7 @@ export default function VerifyAccount() {
 
     const onSubmit = async (data: z.infer<typeof verifyCodeSchema>) => {
         try {
+            setLoading(true)
             const response = await axios.post('/api/verify-code', {
                 username: params.username,
                 code: data.code
@@ -31,7 +34,7 @@ export default function VerifyAccount() {
                 title: "Success",
                 description: response.data.message
             })
-            router.replace('sign-in')
+            router.replace('/sign-in')
         } catch (error) {
             console.log("Error in Verification of User code", error);
             const axiosError = error as AxiosError<ApiResponse>;
@@ -42,6 +45,8 @@ export default function VerifyAccount() {
                 variant: "destructive"
             })
 
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -72,7 +77,7 @@ export default function VerifyAccount() {
             </FormItem>
           )}
         />
-        <Button type="submit">Verify</Button>
+        <Button type="submit">{loading ? "Loading": "Verify"}</Button>
           </form>
         </Form>
             </div>
