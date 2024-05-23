@@ -70,9 +70,9 @@ export default function Page () {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Username / Email</FormLabel>
               <FormControl>
-                <Input placeholder="email/username" {...field} />
+                <Input placeholder="username/email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

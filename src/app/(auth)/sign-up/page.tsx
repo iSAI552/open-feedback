@@ -145,7 +145,7 @@ export default function Page () {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input type="password" placeholder="password" {...field} />
               </FormControl>
