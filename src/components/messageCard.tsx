@@ -47,9 +47,9 @@ export default function MessageCard({message, onMessageDelete}: MessageCardProps
         <div>
             <Card>
                 <CardHeader>
-                    <CardTitle>Card Title</CardTitle>
+                    <CardTitle>{message.content}</CardTitle>
                     <AlertDialog>
-                        <AlertDialogTrigger asChild>
+                        <AlertDialogTrigger asChild className="w-10 flex flex-col ">
                             <Button variant="destructive"><X className="w-5 h-5"/></Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
@@ -66,7 +66,6 @@ export default function MessageCard({message, onMessageDelete}: MessageCardProps
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
-                    <CardDescription>Card Description</CardDescription>
                 </CardHeader>
                 <CardContent>
                 </CardContent>

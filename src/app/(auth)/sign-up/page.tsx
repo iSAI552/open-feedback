@@ -115,7 +115,7 @@ export default function Page () {
                   isCheckingUsername && <Loader2 className="animate-spin"/>
                 }
                   <p className={`text-sm ${usernameMessage === "Username is available" ? 'text-green-500': 'text-red-500'}`}>
-                    test {usernameMessage}
+                    {usernameMessage}
                   </p>
               {/* <FormDescription>
                 This is your public display name.
