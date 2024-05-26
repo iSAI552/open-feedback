@@ -21,7 +21,6 @@ export default function Page() {
     const fetchMessages = useCallback(async (refresh: boolean = false) => {
         setIsLoading(true)
         try {
-            console.log("hello");
             const response = await axios.get('/api/getAll-messages')
             setMessages(response.data.messages || [])
             if (refresh) {

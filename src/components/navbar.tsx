@@ -3,11 +3,14 @@ import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
 import { User } from "next-auth"
 import { Button } from "./ui/button"
+import { ContactRoundIcon } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function Navbar() {
 
     const { data: session } = useSession()
     const user = session?.user as User
+    const router = useRouter()
 
 
     return (
@@ -18,7 +21,10 @@ export default function Navbar() {
                     session ? (
                         <>
                             <span className="mr-4">Welcome, {user?.username || user?.email}</span>
+                            <div className="flex ">
+                            <Button className="w-full md:w-auto mr-4" onClick={() => router.replace('/dashboard')}><ContactRoundIcon/></Button>
                             <Button className="w-full md:w-auto" onClick={() => signOut()}>Logout</Button>
+                            </div>
                         </>
                     ) : (
                         <Link href='/sign-in'>

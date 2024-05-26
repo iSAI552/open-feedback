@@ -49,7 +49,7 @@ export default function Page () {
     }
 
     if(result?.url){
-        router.replace('/dashboard')
+        router.replace('/all-messages')
     }
 
   }

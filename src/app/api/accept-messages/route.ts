@@ -61,7 +61,7 @@ export async function GET(request: Request){
     const session = await getServerSession(authOptions)
     const user: User = session?.user as User
 
-    if(!session || session.user){
+    if(!session || !session.user){
         return Response.json({
             success: false,
             message: "Not Authenticated"
