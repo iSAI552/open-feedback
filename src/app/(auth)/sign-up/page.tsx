@@ -174,6 +174,12 @@ export default function Page () {
               Sign In
             </Link>
           </p>
+          <p className="text-xs text-gray-400 mt-1">
+            Want to know more about us?{' '}
+            <Link href="/" className="text-blue-500 hover:text-blue-800">
+              Open Feedback
+            </Link>
+          </p>
         </div>
 
         </div>
