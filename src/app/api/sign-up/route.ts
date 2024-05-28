@@ -2,9 +2,35 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/user.models";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import { mailSender } from "@/helpers/mailSender";
 
 export async function POST(request: Request) {
     await dbConnect()
+
+    async function sendVerificationEmailNodemailer(email: string, otp: string, username: string) {
+        try {
+            const mailResponse = await mailSender(
+                email,
+                "Verification Email",
+                `<h1>Please confirm your OTP for username: ${username}</h1>
+                <p>Here is your OTP code: ${otp}</p>`
+            );
+            if (!mailResponse) {
+                throw new Error("Error while sending email");
+            }
+    
+            console.log("Email sent successfully");
+    
+        } catch (error) {
+            console.error("Error sending email", error);
+            return Response.json({
+                        success: false,
+                        message: "Error sending email", error
+                    }, {
+                        status: 500
+                    })
+        }
+    }
 
     try {
         const {username, email, password} = await request.json()
@@ -49,17 +75,26 @@ export async function POST(request: Request) {
             await newUser.save()
         }
 
-        const emailResponse = await sendVerificationEmail(email, username, verifyCode)
+        // const emailResponse = await sendVerificationEmail(email, username, verifyCode)
+        
+        const emailResponse:any = await sendVerificationEmailNodemailer(email, verifyCode, username)
 
-        if(!emailResponse.success) {
-            return Response.json({
-                success: false,
-                message: emailResponse.message
-            }, {
-                status: 500
-            })
-        }
-
+        // if(!emailResponse.success) {
+        //     return Response.json({
+        //         success: false,
+        //         message: emailResponse.message
+        //     }, {
+        //         status: 500
+        //     })
+        // }
+        // if(!emailResponse) {
+        //     return Response.json({
+        //         success: false,
+        //         message: "Error sending email"
+        //     }, {
+        //         status: 500
+        //     })
+        // }
         return Response.json({
             success: true,
             message: "User registerd successfully. Please verify your email"

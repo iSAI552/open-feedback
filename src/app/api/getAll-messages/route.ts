@@ -34,6 +34,7 @@ export async function GET(request: Request) {
         $project: {
           username: 1,
           message: "$messages.content",
+          createdAt: "$messages.createdAt",
         },
       },
     ]).exec();

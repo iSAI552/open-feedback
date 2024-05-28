@@ -9,10 +9,11 @@ import axios, { AxiosError } from "axios"
 import { Loader2, RefreshCcw } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
+import dayjs from 'dayjs';
 
 export default function Page() {
 
-    const [messages, setMessages] = useState<[{_id:any, username:string, message:string}]>()
+    const [messages, setMessages] = useState<[{ _id: any, username: string, message: string, createdAt: Date }]>()
     const [isLoading, setIsLoading] = useState(false)
     const { toast } = useToast()
 
@@ -81,6 +82,9 @@ export default function Page() {
                             <CardHeader>
                                 <CardTitle>{message.message}</CardTitle>
                                 <CardDescription>@{message.username}</CardDescription>
+                                <div className="text-sm">
+                                    {dayjs(message.createdAt).format('MMM D, YYYY h:mm A')}
+                                </div>
                             </CardHeader>
                         </Card>
 
