@@ -19,12 +19,13 @@ import { Input } from "./ui/input"
 import { useState } from "react"
 
 function DialogBox() {
+    const router = useRouter()
     const [username, setUsername] = useState('')
     return (
         <div>
             <Dialog>
                 <DialogTrigger asChild >
-                    <Button variant="ghost"><MailIcon className="w-full md:w-auto"/></Button>
+                    <Button variant="ghost"><MailIcon /></Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
@@ -44,10 +45,10 @@ function DialogBox() {
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
-                        <Link href={`u/${username}`}>
+                        <Button onClick={() => router.push(`u/${username}`)}>
                         <span className="sr-only">Go</span>
-                            <Forward className="h-4 w-4" />
-                        </Link>
+                            <Forward className="h-4 w-4 to-primary" />
+                        </Button>
                     </div>
                 </DialogContent>
             </Dialog>
