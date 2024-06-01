@@ -49,7 +49,10 @@ export default function Page() {
     }, [session, fetchMessages])
 
     if (!session || !session.user) {
-        return <div>Please Log In</div>
+        return  <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
+        <h1 className="text-4xl font-bold mb-6 text-center text-gray-700">
+            Please Log In!
+        </h1></div>
     }
 
     return (
