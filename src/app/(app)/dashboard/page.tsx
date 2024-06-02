@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import axios, { AxiosError } from "axios"
 import { Loader2, RefreshCcw } from "lucide-react"
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
@@ -21,6 +22,7 @@ export default function Page() {
     const [isLoading, setIsLoading] = useState(false)
     const [isSwitchLoading, setIsSwitchLoading] = useState(false)
     const { toast } = useToast()
+    const router = useRouter()
 
     const handleDeleteMessage = (messageId: string) => {
         setMessages(messages.filter((message) => message._id !== messageId))
@@ -109,10 +111,14 @@ export default function Page() {
     }
 
     if (!session || !session.user) {
+        setTimeout(() => {
+            router.replace('/')
+        }, 2000);
         return  <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
         <h1 className="text-4xl font-bold mb-6 text-center text-gray-700">
             Please Log In!
-        </h1></div>
+        </h1>
+        <h3 className="mb-6 text-center text-gray-700">Redirecting .....</h3></div>
     }
 
     const { username } = session.user as User;
