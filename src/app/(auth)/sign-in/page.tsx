@@ -41,6 +41,8 @@ export default function Page () {
         password: data.password
     })
     if(result?.error){
+      setIsSubmitting(false)
+      form.reset({ ...form.getValues(), identifier: '', password: '' });
         toast({
             title: "Login failed",
             description: "Incorrect username or password",
