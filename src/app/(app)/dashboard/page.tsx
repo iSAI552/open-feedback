@@ -111,14 +111,10 @@ export default function Page() {
     }
 
     if (!session || !session.user) {
-        setTimeout(() => {
-            router.replace('/')
-        }, 2000);
         return  <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
         <h1 className="text-4xl font-bold mb-6 text-center text-gray-700">
             Please Log In!
-        </h1>
-        <h3 className="mb-6 text-center text-gray-700">Redirecting .....</h3></div>
+        </h1></div>
     }
 
     const { username } = session.user as User;
