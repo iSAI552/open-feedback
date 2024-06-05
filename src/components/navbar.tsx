@@ -45,7 +45,10 @@ function DialogBox() {
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
-                        <Button onClick={() => router.push(`u/${username}`)}>
+                        <Button onClick={() => {
+                            router.push(`u/${username}`)
+                            router.refresh()
+                        }}>
                         <span className="sr-only">Go</span>
                             <Forward className="h-4 w-4 to-primary" />
                         </Button>
