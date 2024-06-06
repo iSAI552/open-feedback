@@ -62,7 +62,7 @@ export default function Page() {
         <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
             <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
                 <h1 className="text-4xl font-bold mb-6 text-center text-gray-700">
-                    Public Profile Link
+                @{username}
                 </h1>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -71,7 +71,7 @@ export default function Page() {
                             name="content"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-gray-500">Send Anonymous Message to @{username}</FormLabel>
+                                    <FormLabel className="text-gray-500">Send Anonymous Message</FormLabel>
                                     <FormControl>
                                         <Textarea
                                             placeholder="Write your anonymous message here"
