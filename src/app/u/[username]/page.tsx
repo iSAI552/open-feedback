@@ -79,7 +79,7 @@ export default function Page() {
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormDescription>Please send a message of min 10 characters</FormDescription>
+                                    <FormDescription className={messageContent?.length < 10 ? "text-red-500": ""}>Please send a message of min 10 characters</FormDescription>
                                 </FormItem>
                             )}
                         />
