@@ -141,7 +141,7 @@ export default function Page() {
                         type="text"
                         value={profileUrl}
                         disabled
-                        className="input input-bordered w-full p-2 mr-2"
+                        className="input input-bordered w-full p-2 mr-2 rounded-lg bg-gray-200"
                     />
                     <Button onClick={copyToClipboard}>Copy</Button>
                 </div>
