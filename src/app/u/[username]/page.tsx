@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from "lucide-react"
-import Navbar from "@/components/navbar"
+import Link from "next/link"
 
 export default function Page() {
 
@@ -58,8 +58,10 @@ export default function Page() {
 
     return (
         <>
-        <Navbar />
         <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+        <Link href="/" className="text-xl md:text-5xl font-semibold justify-center flex text-gray-800">
+            Open Feedback
+          </Link>
             <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
                 <h1 className="text-4xl font-bold mb-6 text-center text-gray-700">
                 @{username}
