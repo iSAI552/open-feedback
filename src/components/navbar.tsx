@@ -5,11 +5,13 @@ import { User } from "next-auth"
 import { Button } from "./ui/button"
 import { ContactRoundIcon, Forward, MailIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
+import axios from 'axios'
 
 import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -17,8 +19,10 @@ import {
 import { Label } from "./ui/label"
 import { Input } from "./ui/input"
 import { useState } from "react"
+import { ApiResponse } from "@/types/apiResponse"
 
-function DialogBox() {
+
+function UsernameDialogBox() {
     const router = useRouter()
     const [username, setUsername] = useState('')
     return (
@@ -49,13 +53,75 @@ function DialogBox() {
                             router.push(`u/${username}`)
                             router.refresh()
                         }}>
-                        <span className="sr-only">Go</span>
+                            <span className="sr-only">Go</span>
                             <Forward className="h-4 w-4 to-primary" />
                         </Button>
                     </div>
                 </DialogContent>
             </Dialog>
         </div>
+    )
+}
+
+async function handelSubmit(newUsername: string){
+
+    try {
+        const response = await axios.post<ApiResponse>('api/update-profile', {
+            newUsername
+        })
+        if(response.data.success){
+            alert("Username updated successfully")
+            signOut()
+        }
+
+    } catch (error) {
+        alert("Username already taken")
+            
+        console.log("Something went wrong while updating the username", error)
+    }
+}
+
+function UpdateDialogBox() {
+    const { data: session } = useSession()
+    const [name, setName] = useState(session?.user.username || "")
+
+
+
+    return (
+        <div>
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="outline">Edit Profile</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Edit profile</DialogTitle>
+                        <DialogDescription>
+                            Make changes to your profile here. Click save when you are done.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="username" className="text-right">
+                                Username
+                            </Label>
+                            <Input
+                                id="username"
+                                defaultValue={name}
+                                className="col-span-3"
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter >
+                        <Button onClick={() => {
+                            handelSubmit(name)
+                            }}
+                            type="submit">Save changes</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </div >
     )
 }
 
@@ -73,19 +139,19 @@ export default function Navbar() {
                 {
                     session ? (
                         <>
-                            <span className="mr-4">Welcome, {user?.username || user?.email}</span>
+                            <span className="mr-4">Welcome, {user?.username || user?.email} <UpdateDialogBox  /></span>
                             <div className="flex">
-                                <DialogBox />
+                                <UsernameDialogBox />
                                 <Button variant="ghost" className="w-full md:w-auto mr-4 ml-4" onClick={() => router.replace('/dashboard')}><ContactRoundIcon /></Button>
                                 <Button variant="outline" className="w-full md:w-auto" onClick={() => signOut()}>Logout</Button>
                             </div>
                         </>
                     ) : (
                         <div className="flex">
-                        <DialogBox />
-                        <Link className="ml-4" href='/sign-in'>
-                            <Button className="w-full md:w-auto">Login</Button>
-                        </Link>
+                            <UsernameDialogBox />
+                            <Link className="ml-4" href='/sign-in'>
+                                <Button className="w-full md:w-auto">Login</Button>
+                            </Link>
                         </div>
                     )
                 }
