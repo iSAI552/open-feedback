@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
 import { User } from "next-auth"
 import { Button } from "./ui/button"
-import { ContactRoundIcon, Forward, MailIcon } from "lucide-react"
+import { ContactRoundIcon, Forward, MailIcon, PencilIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import axios from 'axios'
 
@@ -91,7 +91,7 @@ function UpdateDialogBox() {
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="outline">Edit Profile</Button>
+                    <Button className="w-12 h-12" variant="ghost"><PencilIcon /></Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
@@ -139,7 +139,7 @@ export default function Navbar() {
                 {
                     session ? (
                         <>
-                            <span className="mr-4">Welcome, {user?.username || user?.email} <UpdateDialogBox  /></span>
+                            <div className="flex items-center">Welcome, {user?.username || user?.email} <UpdateDialogBox  /></div>
                             <div className="flex">
                                 <UsernameDialogBox />
                                 <Button variant="ghost" className="w-full md:w-auto mr-4 ml-4" onClick={() => router.replace('/dashboard')}><ContactRoundIcon /></Button>
