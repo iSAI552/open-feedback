@@ -16,16 +16,20 @@ export default function Page() {
 
     const [messages, setMessages] = useState<[{ _id: any, username: string, message: string, createdAt: Date }]>()
     const [isLoading, setIsLoading] = useState(false)
+    const [page, setPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
     const { toast } = useToast()
     const router = useRouter()
 
     const { data: session } = useSession()
 
-    const fetchMessages = useCallback(async (refresh: boolean = false) => {
+    const fetchMessages = useCallback(async (pageNumber: number, refresh: boolean = false) => {
         setIsLoading(true)
+        
         try {
-            const response = await axios.get('/api/getAll-messages')
+            const response = await axios.get(`/api/getAll-messages?page=${pageNumber}`)
             setMessages(response.data.messages || [])
+            setTotalPages(response.data.totalPages || 1)
             if (refresh) {
                 toast({
                     title: "Refreshed the messages",
@@ -42,13 +46,28 @@ export default function Page() {
         } finally {
             setIsLoading(false)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setIsLoading, setMessages])
+    }, [setIsLoading, setMessages, toast])
 
     useEffect(() => {
         if (!session || !session.user) return
-        fetchMessages()
-    }, [session, fetchMessages])
+        fetchMessages(page)
+    }, [session, page, fetchMessages])
+
+    const handleNextPage = () => {
+        if (page < totalPages) {
+            const nextPage = page + 1;
+            setPage(nextPage);
+            fetchMessages(nextPage);
+        }
+    }
+
+    const handlePrevPage = () => {
+        if (page > 1) {
+            const prevPage = page - 1;
+            setPage(prevPage);
+            fetchMessages(prevPage);
+        }
+    }
 
     if (!session || !session.user) {
         return  <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
@@ -72,7 +91,7 @@ export default function Page() {
                 variant="outline"
                 onClick={(e) => {
                     e.preventDefault();
-                    fetchMessages(true);
+                    fetchMessages(page, true);
                 }}
             >
                 {isLoading ? (
@@ -98,6 +117,10 @@ export default function Page() {
                 ) : (
                     <p>No messages to display.</p>
                 )}
+            </div>
+            <div className="mt-4 flex justify-between">
+                <Button variant="outline" onClick={() => handlePrevPage()}>Previous</Button>
+                <Button variant="outline" onClick={() => handleNextPage()}>Next</Button>
             </div>
         </div>
     );

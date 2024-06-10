@@ -20,7 +20,15 @@ export async function GET(request: Request) {
     );
   }
 
+  const { searchParams } = new URL(request.url);
+  const page: number = parseInt(searchParams.get("page") || "1");
+  const limit: number = parseInt(searchParams.get("limit") || "4");
+
+
   try {
+    const skip = (page - 1) * limit;
+
+
     const allMessages = await UserModel.aggregate([
       {
         $unwind: "$messages",
@@ -29,6 +37,12 @@ export async function GET(request: Request) {
         $sort: {
           "messages.createdAt": -1,
         },
+      },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: limit,
       },
       {
         $project: {
@@ -52,10 +66,23 @@ export async function GET(request: Request) {
       );
     }
 
+    const totalPages = await UserModel.aggregate([
+      {
+        $unwind: "$messages",
+      },
+      {
+        $sort: {
+          "messages.createdAt": -1,
+        },
+      },
+    ]).exec().then((data) => Math.ceil(data.length / limit));
+
     return Response.json(
       {
         success: true,
         messages: allMessages,
+        currentPage: page,
+        totalPages: totalPages,
       },
       {
         status: 200,
