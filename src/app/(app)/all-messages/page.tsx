@@ -12,6 +12,17 @@ import { useCallback, useEffect, useState } from "react"
 import dayjs from 'dayjs';
 import { useRouter } from "next/navigation"
 
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+
+
 export default function Page() {
 
     const [messages, setMessages] = useState<[{ _id: any, username: string, message: string, createdAt: Date }]>()
@@ -25,7 +36,7 @@ export default function Page() {
 
     const fetchMessages = useCallback(async (pageNumber: number, refresh: boolean = false) => {
         setIsLoading(true)
-        
+
         try {
             const response = await axios.get(`/api/getAll-messages?page=${pageNumber}`)
             setMessages(response.data.messages || [])
@@ -69,11 +80,16 @@ export default function Page() {
         }
     }
 
+    const handleGivenPage = (pageNumber: number) => {
+        setPage(pageNumber);
+        fetchMessages(pageNumber);
+    }
+
     if (!session || !session.user) {
-        return  <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
-        <h1 className="text-4xl font-bold mb-6 text-center text-gray-700">
-            Please Log In!
-        </h1>
+        return <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
+            <h1 className="text-4xl font-bold mb-6 text-center text-gray-700">
+                Please Log In!
+            </h1>
         </div>
     }
 
@@ -118,10 +134,35 @@ export default function Page() {
                     <p>No messages to display.</p>
                 )}
             </div>
+            <Separator className="mt-2"/>
             <div className="mt-4 flex justify-between">
-                <Button variant="outline" onClick={() => handlePrevPage()}>Previous</Button>
-                <Button variant="outline" onClick={() => handleNextPage()}>Next</Button>
+            <Pagination>
+                <PaginationContent>
+                    <PaginationItem>
+                        <PaginationPrevious href="#" onClick={() => handlePrevPage()} />
+                    </PaginationItem>
+
+                    {page < totalPages ? (<> <PaginationItem>
+                        <PaginationLink href="#" isActive  onClick={() => handleGivenPage(page+1)}>{page}</PaginationLink>
+                    </PaginationItem><PaginationItem>
+                            <PaginationLink href="#" onClick={() => handleGivenPage(page+1)}>
+                                {page + 1}
+                            </PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationEllipsis />
+                        </PaginationItem></>) : <><PaginationItem>
+                            <PaginationEllipsis />
+                        </PaginationItem> <PaginationItem>
+                            <PaginationLink href="#" isActive >{page}</PaginationLink>
+                        </PaginationItem></>}
+                    <PaginationItem>
+                        <PaginationNext href="#" onClick={() => handleNextPage()} />
+                    </PaginationItem>
+                </PaginationContent>
+            </Pagination>
             </div>
+            
         </div>
     );
 }
