@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/components/ui/use-toast"
 import { ApiResponse } from "@/types/apiResponse"
@@ -98,7 +98,7 @@ export default function Page() {
             <h1 className="text-4xl font-bold mb-4">All messages</h1>
 
             <div className="mb-4">
-                <h2 className="text-lg font-semibold mb-2">What is everyone talking about</h2>{' '}
+                <h2 className="text-lg font-semibold mb-2">What is everyone talking about...</h2>{' '}
             </div>
             <Separator />
 
@@ -134,8 +134,7 @@ export default function Page() {
                     <p>No messages to display.</p>
                 )}
             </div>
-            <Separator className="mt-2"/>
-            <div className="mt-4 flex justify-between">
+            <div className="mt-5 flex justify-between">
             <Pagination>
                 <PaginationContent>
                     <PaginationItem>

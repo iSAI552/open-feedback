@@ -3,7 +3,7 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/user.models";
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
@@ -21,43 +21,29 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { newUsername } = await request.json();
-    if (!newUsername) {
+    const allUsernames = await UserModel.find({}, { username: 1 }).exec() || [];
+    if(allUsernames) {
       return Response.json(
         {
           success: true,
-          message: "No changes made to username!",
+          usernames: allUsernames,
         },
         {
-          status: 201,
+          status: 200,
         }
       );
     }
-
-    await UserModel.findByIdAndUpdate(session.user._id, {
-      $set: {
-        username: newUsername,
-      },
-      
-    }, { new: true});
-    return Response.json(
-      {
-        success: true,
-        message: "Username updated successfully",
-      },
-      {
-        status: 201,
-      }
-    );
   } catch (error) {
+    console.log("Error while getting all the usernames", error);
     return Response.json(
       {
-        success: true,
-        message: "Error updating username",
+        success: false,
+        message: "Error while getting all the usernames",
       },
       {
         status: 500,
       }
     );
   }
+
 }
