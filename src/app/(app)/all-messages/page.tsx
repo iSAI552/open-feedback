@@ -22,6 +22,20 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 
+import { Skeleton } from "@/components/ui/skeleton"
+
+function SkeletonMessages() {
+    return (
+        <div className="flex items-center space-x-4">
+            <div className="space-y-2">
+                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-4 w-[200px]" />
+                <Skeleton className="h-4 w-[250px]" />
+            </div>
+        </div>
+    )
+}
+
 
 export default function Page() {
 
@@ -30,7 +44,6 @@ export default function Page() {
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
     const { toast } = useToast()
-    const router = useRouter()
 
     const { data: session } = useSession()
 
@@ -116,52 +129,61 @@ export default function Page() {
                     <RefreshCcw className="h-4 w-4" />
                 )}
             </Button>
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-                {messages && messages.length > 0 ? (
-                    messages.map((message, index) => (
-                        <Card key={index}>
-                            <CardHeader>
-                                <CardTitle>{message.message}</CardTitle>
-                                <CardDescription>@{message.username}</CardDescription>
-                                <div className="text-sm">
-                                    {dayjs(message.createdAt).format('MMM D, YYYY h:mm A')}
-                                </div>
-                            </CardHeader>
-                        </Card>
+            {isLoading ? (
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-9">
+                    <SkeletonMessages />
+                    <SkeletonMessages />
+                    <SkeletonMessages />
+                    <SkeletonMessages />
+                </div>
+            ) : (
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {messages && messages.length > 0 ? (
+                        messages.map((message, index) => (
+                            <Card key={index}>
+                                <CardHeader>
+                                    <CardTitle>{message.message}</CardTitle>
+                                    <CardDescription>@{message.username}</CardDescription>
+                                    <div className="text-sm">
+                                        {dayjs(message.createdAt).format('MMM D, YYYY h:mm A')}
+                                    </div>
+                                </CardHeader>
+                            </Card>
 
-                    ))
-                ) : (
-                    <p>No messages to display.</p>
-                )}
-            </div>
+                        ))
+                    ) : (
+                        <p>No messages to display.</p>
+                    )}
+                </div>
+            )}
             <div className="mt-5 flex justify-between">
-            <Pagination>
-                <PaginationContent>
-                    <PaginationItem>
-                        <PaginationPrevious href="#" onClick={() => handlePrevPage()} />
-                    </PaginationItem>
-
-                    {page < totalPages ? (<> <PaginationItem>
-                        <PaginationLink href="#" isActive  onClick={() => handleGivenPage(page+1)}>{page}</PaginationLink>
-                    </PaginationItem><PaginationItem>
-                            <PaginationLink href="#" onClick={() => handleGivenPage(page+1)}>
-                                {page + 1}
-                            </PaginationLink>
-                        </PaginationItem>
+                <Pagination>
+                    <PaginationContent>
                         <PaginationItem>
-                            <PaginationEllipsis />
-                        </PaginationItem></>) : <><PaginationItem>
-                            <PaginationEllipsis />
-                        </PaginationItem> <PaginationItem>
-                            <PaginationLink href="#" isActive >{page}</PaginationLink>
-                        </PaginationItem></>}
-                    <PaginationItem>
-                        <PaginationNext href="#" onClick={() => handleNextPage()} />
-                    </PaginationItem>
-                </PaginationContent>
-            </Pagination>
+                            <PaginationPrevious href="#" onClick={() => handlePrevPage()} />
+                        </PaginationItem>
+
+                        {page < totalPages ? (<> <PaginationItem>
+                            <PaginationLink href="#" isActive onClick={() => handleGivenPage(page + 1)}>{page}</PaginationLink>
+                        </PaginationItem><PaginationItem>
+                                <PaginationLink href="#" onClick={() => handleGivenPage(page + 1)}>
+                                    {page + 1}
+                                </PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationEllipsis />
+                            </PaginationItem></>) : <><PaginationItem>
+                                <PaginationEllipsis />
+                            </PaginationItem> <PaginationItem>
+                                <PaginationLink href="#" isActive >{page}</PaginationLink>
+                            </PaginationItem></>}
+                        <PaginationItem>
+                            <PaginationNext href="#" onClick={() => handleNextPage()} />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
             </div>
-            
+
         </div>
     );
 }
