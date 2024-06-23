@@ -2,4 +2,4 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-Visit the website on [text](https://open-feedback.vercel.app)
+Visit the website on [Open Feedback](https://open-feedback.vercel.app)
