@@ -10,7 +10,6 @@ import { Loader2, RefreshCcw } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useCallback, useEffect, useState } from "react"
 import dayjs from 'dayjs';
-import { useRouter } from "next/navigation"
 
 import {
     Pagination,
